@@ -5,6 +5,7 @@
 #include "wifi_ota.h"
 
 // Control 3 motors with 6 relays. Arduino limitation: 'all functions that require custom datatstructures have to be placed in an additional .h file'
+#define T_OFF 30 // turn off relays after this time (s)
 #include "motors.h"
 
 void setup() {
@@ -17,7 +18,7 @@ void setup() {
   // -> Use RX/TX as GPIO -> no more serial after setup.
   // -> Use A0 as input. Goes low over time -> pull high.
   // D8 is pulled down -> pair with A0.
-  // Other pins (except D0) are high with INPUT_PULLUP.
+  // Other pins (except D0 which floats) are high with INPUT_PULLUP.
 
   // output: 6 relays, 2 for each motor: 1. power on/off, 2. up/down
   // change the UART pins to GPIO, https://arduino.stackexchange.com/questions/29938/how-to-i-make-the-tx-and-rx-pins-on-an-esp-8266-01-into-gpio-pins
@@ -25,26 +26,28 @@ void setup() {
   //pinMode(1, FUNCTION_3); // TX
   //pinMode(3, FUNCTION_3); // RX
   // int output_pins[6] = { D3, D4, TX, RX, D0, D8 };
-  int output_pins[] = { D4, D3, D8, D0 }; // RX, TX
+  int output_pins[] = { D4, D3, D2, D0 }; // RX, TX
   for (int i = 0; i < 4; i++) {
     pinMode(output_pins[i], OUTPUT);
     digitalWrite(output_pins[i], HIGH);
   }
 
   // input: 6 pins for 3 up/down switches
-  // pinMode(D0, INPUT_PULLUP); // 0 floating
-  // pinMode(D8, INPUT_PULLUP); // 0 pull-down
+  // pull down with GND:
   pinMode(D1, INPUT_PULLUP); // 1
   pinMode(D2, INPUT_PULLUP); // 1
   pinMode(D5, INPUT_PULLUP); // 1
   pinMode(D6, INPUT_PULLUP); // 1
   pinMode(D7, INPUT_PULLUP); // 1
-  // A0: 8-14
+  // pull high with 3V3:
+  pinMode(D8, INPUT); // 0
+  // A0: 8-14, 1024 when shorted to 3V3
 }
 
-struct motor m1 = { D4, D3 };
-struct motor m2 = { D0, D8 };
-struct motor m3 = { RX, TX };
+struct motor m1 = { D4, D3, D7, D6 };
+struct motor m2 = { D2, D0, D5, D1 };
+struct motor m3 = { RX, TX, D8, A0 };
+struct motor ms[] = { m1, m2, m3 };
 
 #define printRead(pin) Serial.printf("%s: %u, ", #pin, digitalRead(pin));
 
@@ -57,6 +60,10 @@ void loop() {
   printRead(D6);
   printRead(D7);
   Serial.printf("A0: %u\n", analogRead(A0));
+
+  readMove(m1);
+  readMove(m2);
+  readMove(m3);
   
   delay(500);
 }
