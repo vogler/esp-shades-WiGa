@@ -19,7 +19,7 @@ Espalexa espalexa;
 #include "server.h"
 
 void setup() {
-  Serial.begin(38400);
+  Serial.begin(115200);
   Serial.println("setup");
   setup_WiFi();
   setup_OTA();

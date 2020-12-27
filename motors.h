@@ -80,10 +80,20 @@ bool readMove(struct motor &m) {
 }
 
 void alexa(struct motor &m, uint8_t b) {
-  if (b == 0)
-    move(m, UP);
-  else if (b == 255)
-    move(m, DOWN);
-  else
-    reset(m);
+  if (b == 255) { // on = down
+    if (m.state == MUP)
+       reset(m);
+     else
+       move(m, DOWN);
+  } else if (b == 0) { // off = up
+    if (m.state == MDOWN)
+       reset(m);
+     else
+       move(m, UP);
+  } else {
+    // reset(m);
+    move(m, DOWN); // assume shades are up, otherwise we'd need to know the real state
+    m.lastMove -= (b/255.*60. + 20) * 1000.;
+  }
+
 }
