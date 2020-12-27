@@ -6,12 +6,15 @@
 
 // Control 3 motors with 6 relays. Arduino limitation: 'all functions that require custom datatstructures have to be placed in an additional .h file'
 #define T_OFF 80 // turn off relays after this time (s), moving down takes ~60s
-#define T_DEBOUNCE 100 // debounce time for switch in ms
+#define T_DEBOUNCE 250 // debounce time for switch in ms
 #include "motors.h"
-struct motor m1 = { D2, D0, D7, D6 };
-struct motor m2 = { RX, TX, D5, D1 };
-struct motor m3 = { D4, D3, D8, A0 };
+struct motor m1 = { D2, D0, D8, A0 };
+struct motor m2 = { RX, TX, D7, D6 };
+struct motor m3 = { D4, D3, D5, D1 };
 struct motor ms[] = { m1, m2, m3 };
+
+#include <Espalexa.h>
+Espalexa espalexa;
 
 #include "server.h"
 
@@ -21,6 +24,12 @@ void setup() {
   setup_WiFi();
   setup_OTA();
   setup_WebServer();
+
+  // callback gets brightness (0:off,255:on,1-254:dimmed)
+  espalexa.addDevice("Rollo links", [](uint8_t b){ alexa(m1, b); });
+  espalexa.addDevice("Rollo Mitte", [](uint8_t b){ alexa(m2, b); });
+  espalexa.addDevice("Rollo rechts", [](uint8_t b){ alexa(m3, b); });
+  espalexa.begin(&server);
 
   // Need 6 output and 6 input pins, but there are only 9 GPIO on Wemos D1 mini.
   // -> Use RX/TX as GPIO -> no more serial after setup.
@@ -54,7 +63,8 @@ void setup() {
 
 void loop() {
   ArduinoOTA.handle();
-  server.handleClient();
+  // server.handleClient();
+  espalexa.loop();
   
 //  printRead(D1);
 //  printRead(D5);

@@ -4,34 +4,12 @@
 
 ESP8266WebServer server(80);
 
-void handleNotFound() {
-  String message = "File Not Found\n\n";
-  message += "URI: ";
-  message += server.uri();
-  message += "\nMethod: ";
-  message += (server.method() == HTTP_GET) ? "GET" : "POST";
-  message += "\nArguments: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++) {
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
-  server.send(404, "text/plain", message);
-}
-
 void setup_WebServer() {
-  server.onNotFound(handleNotFound);
-
-  server.on("/set", []() {
-    server.send(200, "text/plain", "OK");
-  });
+//  server.on("/set", []() {
+//    server.send(200, "text/plain", "OK");
+//  });
   
-  server.on("/", []() {
-//    if (server.hasArg("reset")) {
-//      reset(m1);
-//      reset(m2);
-//      reset(m3);
-//    }
+  server.on("/", HTTP_GET, []() {
     if (server.hasArg("m1")) {
       if (server.arg("m1") == "down")
         move(m1, DOWN);
@@ -144,5 +122,13 @@ void setup_WebServer() {
     server.send(200, "text/html", http_content);
   });
 
-  server.begin();
+  // https://github.com/Aircoookie/Espalexa#i-tried-to-use-this-in-my-sketch-that-already-uses-an-esp8266webserver-it-doesnt-work
+  server.onNotFound([](){
+    if (!espalexa.handleAlexaApiCall(server.uri(),server.arg(0)))
+    {
+      server.send(404, "text/plain", "Not found");
+    }
+  });
+
+  // server.begin(); // done by espalexa
 }

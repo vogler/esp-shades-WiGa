@@ -78,3 +78,12 @@ bool readMove(struct motor &m) {
   }
   return false;
 }
+
+void alexa(struct motor &m, uint8_t b) {
+  if (b == 0)
+    move(m, UP);
+  else if (b == 255)
+    move(m, DOWN);
+  else
+    reset(m);
+}
