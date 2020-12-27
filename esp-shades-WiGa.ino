@@ -5,11 +5,12 @@
 #include "wifi_ota.h"
 
 // Control 3 motors with 6 relays. Arduino limitation: 'all functions that require custom datatstructures have to be placed in an additional .h file'
-#define T_OFF 80 // turn off relays after this time (s), takes ~60s
+#define T_OFF 80 // turn off relays after this time (s), moving down takes ~60s
+#define T_DEBOUNCE 100 // debounce time for switch in ms
 #include "motors.h"
-struct motor m1 = { D2, D0, D5, D1 };
-struct motor m2 = { RX, TX, D8, A0 };
-struct motor m3 = { D4, D3, D7, D6 };
+struct motor m1 = { D2, D0, D7, D6 };
+struct motor m2 = { RX, TX, D5, D1 };
+struct motor m3 = { D4, D3, D8, A0 };
 struct motor ms[] = { m1, m2, m3 };
 
 #include "server.h"
@@ -23,15 +24,15 @@ void setup() {
 
   // Need 6 output and 6 input pins, but there are only 9 GPIO on Wemos D1 mini.
   // -> Use RX/TX as GPIO -> no more serial after setup.
-  // -> Use A0 as input. Goes low over time -> pull high.
+  // -> Use A0 as input. Goes low over time -> pull high with switch.
   // D8 is pulled down -> pair with A0.
   // Other pins (except D0 which floats) are high with INPUT_PULLUP.
 
   // output: 6 relays, 2 for each motor: 1. power on/off, 2. up/down
   // change the UART pins to GPIO, https://arduino.stackexchange.com/questions/29938/how-to-i-make-the-tx-and-rx-pins-on-an-esp-8266-01-into-gpio-pins
   // won't be able to use serial monitor after this, change back with FUNCTION_0
-  pinMode(1, FUNCTION_3); // TX
-  pinMode(3, FUNCTION_3); // RX
+  pinMode(TX, FUNCTION_3);
+  pinMode(RX, FUNCTION_3);
   int output_pins[] = { D4, D3, D2, D0, RX, TX };
   for (int i = 0; i < 6; i++) {
     pinMode(output_pins[i], OUTPUT);

@@ -28,7 +28,7 @@ void ch_dir(struct motor &m, enum dir d) {
 }
 
 void reset(struct motor &m) {
-  ch_dir(m, UP);
+  // ch_dir(m, UP);
   power(m, OFF);
   m.state = STOP;
   Serial.printf("motor with power_pin %u is reset\n", m.power_pin);
@@ -52,16 +52,22 @@ bool is_pressed(byte pin) { // A0: analog, D8: pull-down, rest: pull-up
   }
 }
 
+unsigned long lastPress[16];
+
+bool debounce(byte pin) {
+  bool r = millis() - lastPress[pin] > T_DEBOUNCE;
+  lastPress[pin] = millis();
+  return r;
+}
+
 bool readMove(struct motor &m) {
-  if (is_pressed(m.down_pin)) {
-    Serial.println("down pressed");
+  if (is_pressed(m.down_pin) && debounce(m.down_pin)) {
     if (m.state == MUP)
        reset(m);
      else
        move(m, DOWN);
     return true;
-  } else if (is_pressed(m.up_pin)) {
-    Serial.println("up pressed");
+  } else if (is_pressed(m.up_pin) && debounce(m.up_pin)) {
     if (m.state == MDOWN)
        reset(m);
      else
