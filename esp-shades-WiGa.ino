@@ -29,6 +29,9 @@ void setup() {
   espalexa.addDevice("Rollo links", [](uint8_t b){ alexa(m1, b); });
   espalexa.addDevice("Rollo Mitte", [](uint8_t b){ alexa(m2, b); });
   espalexa.addDevice("Rollo rechts", [](uint8_t b){ alexa(m3, b); });
+  // Created a group for the above in the Alexa app, but sometimes one does not react. Maybe too slow to handle three requests at once.
+  // -> Add a device for all three here:
+  espalexa.addDevice("Rollos", [](uint8_t b){ alexa(m1, b); alexa(m2, b); alexa(m3, b); });
   espalexa.begin(&server);
 
   // Need 6 output and 6 input pins, but there are only 9 GPIO on Wemos D1 mini.
