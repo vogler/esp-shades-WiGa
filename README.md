@@ -6,14 +6,16 @@ The idea was to control the 3 motors with 6 relays, i.e. per motor a relay to tu
 
 The motors can be controlled with
 - the spawned webpage,
-- via [Espalexa](https://github.com/Aircoookie/Espalexa) (automations in Alexa app (up/down on sunrise/sunset)),
+- [Espalexa](https://github.com/Aircoookie/Espalexa) (automations in Alexa app (up/down on sunrise/sunset)),
 - the 3 up/down wall switches (momentary/push).
 
-The BOM was pretty small/cheap:
-- 1.81$ Wemos D1 mini
-- 4.47$ 8 channel relay
-- 1.90$ HLK-PM01 power supply (or USB charger)
-- ~1$ cables and screw terminals
+The BOM was pretty small/cheap (<10$):
+| Item                           | Price |
+|--------------------------------|-------|
+| Wemos D1 mini                  | 1.81$ |
+| 8 channel relay                | 4.47$ |
+| HLK-PM01 (or USB power supply) | 1.90$ |
+| cables and screw terminals     | ~1$   |
 
 The only tricky part was finding enough usable I/O pins (6 out for relays, 6 in for buttons).
 The Wemos D1 mini (had no other ESP with me) has 9 GPIO pins, so I
