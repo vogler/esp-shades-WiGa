@@ -22,5 +22,4 @@ The Wemos D1 mini (had no other ESP with me) has 9 GPIO pins, so I
 
 Photos/videos of the post-christmas ghetto repair: https://photos.app.goo.gl/DnHxpkeWf4EXeaCJ8
 
-<img height=600 src="https://lh3.googleusercontent.com/pw/ACtC-3e5OgZFOk4WTNP6frYuehvYgO9rhEIAY_3M5PQixwPejI4KjUMpPIj20uapj4LYSGza5QwKKZCtb8VbGfKdS3G9VDnRp8ygaTlSu3jcIz1RA-Rr9afxIzTlp5zOdRYrmGbrtvDLRI14RaLZyVwNT41Jqg=w1013-h2192-no?authuser=0" />
-<img height=600 src="https://lh3.googleusercontent.com/pw/ACtC-3etxhK9fRQzeHHaUjXg3QbBAP9p_U-_cknw7gIO0Cgf7IJVSR1RY9Tqn56-mfiLlBJpN_RCn2CtOOlhk8VVyrq-COIP-RZ5bA-tghkgTMsALhD2m-lWKGHuZs6QhWbupWBXDeIHfodbc1DkMYCowxHpNg=w1644-h2192-no?authuser=0" />
+<img height=600 src="https://lh3.googleusercontent.com/pw/ACtC-3e5OgZFOk4WTNP6frYuehvYgO9rhEIAY_3M5PQixwPejI4KjUMpPIj20uapj4LYSGza5QwKKZCtb8VbGfKdS3G9VDnRp8ygaTlSu3jcIz1RA-Rr9afxIzTlp5zOdRYrmGbrtvDLRI14RaLZyVwNT41Jqg=w1013-h2192-no?authuser=0" /> <img height=600 src="https://lh3.googleusercontent.com/pw/ACtC-3etxhK9fRQzeHHaUjXg3QbBAP9p_U-_cknw7gIO0Cgf7IJVSR1RY9Tqn56-mfiLlBJpN_RCn2CtOOlhk8VVyrq-COIP-RZ5bA-tghkgTMsALhD2m-lWKGHuZs6QhWbupWBXDeIHfodbc1DkMYCowxHpNg=w1644-h2192-no?authuser=0" />
